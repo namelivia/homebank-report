@@ -1,8 +1,9 @@
 class Options:
-    graphs_path = 'graphs/'
+    def __init__(self, source):
+        self.config = {
+            "graphs_path": source["GRAPHS_PATH"],
+            "xml_file": source["XML_FILE"],
+        }
 
-    def set_graphs_path(self, path):
-        self.graphs_path = path
-
-    def get_graphs_path(self):
-        return self.graphs_path
+    def get(self, key):
+        return self.config[key]

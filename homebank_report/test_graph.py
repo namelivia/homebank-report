@@ -13,8 +13,7 @@ class TestGenerateEvolutionGraph:
         mock_plt.savefig.return_value = None
         
         account_name = "Test Account"
-        options = Options()
-        options.set_graphs_path('test_graphs_path')
+        options = Options({ "GRAPHS_PATH": "test_graphs_path", "XML_FILE": "xml_file" })
         operations = Mock()
         operations.operations = [Mock(amount=100), Mock(amount=-50), Mock(amount=200)]
         

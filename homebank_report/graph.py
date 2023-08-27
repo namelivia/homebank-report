@@ -12,7 +12,7 @@ def generate_evolution_graph(account_name: str, options, operations: OperationSe
     plt.plot(np.cumsum(data))
     plt.title(f'{account_name}: Evolución')
     slug = f'{account_name}_evolucion'
-    graphs_path = options.get_graphs_path()
+    graphs_path = options.get("graphs_path")
     path = f'{graphs_path}/{slug}.png'
     plt.savefig(path)
     return path

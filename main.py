@@ -1,7 +1,7 @@
-import argparse
 import xml.etree.ElementTree as ET
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
 from datetime import date, timedelta
 
@@ -44,14 +44,10 @@ def process_file_contents(root, options):
     #generate_account_reports(last_year, today)
 
 def main():
-    parser = argparse.ArgumentParser(description='Parse an XML file')
-    parser.add_argument('xml_file', type=str, help='Path to the XML file')
-    args = parser.parse_args()
-    options = Options()
-    options.set_graphs_path('/tmp/graphs')
+    options = Options(os.environ)
 
     try:
-        tree = ET.parse(args.xml_file)
+        tree = ET.parse(options.get("xml_file"))
         root = tree.getroot()
         process_file_contents(root, options)
     except ET.ParseError:

@@ -22,7 +22,7 @@ def generate_expenses_pie_chart(account_name: str, options, categories, operatio
 
     if (len(data) == 0):
         return ''
-    return draw_pie_chart(data, options.get_graphs_path(), labels, f'{account_name}: Gastos')
+    return draw_pie_chart(data, options.get("graphs_path"), labels, f'{account_name}: Gastos')
 
 def generate_revenue_pie_chart(account_name: str, options, categories, operations: OperationSet):
     data = []
@@ -35,5 +35,5 @@ def generate_revenue_pie_chart(account_name: str, options, categories, operation
 
     if (len(data) == 0):
         return ''
-    return draw_pie_chart(data, options.get_graphs_path(), labels, f'{account_name}: Ingresos')
+    return draw_pie_chart(data, options.get("graphs_path"), labels, f'{account_name}: Ingresos')
 
