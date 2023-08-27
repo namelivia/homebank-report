@@ -69,6 +69,9 @@ def generate_account_reports(start_date, end_date, accounts, categories, options
             revenue_graph_path=generate_revenue_pie_chart(account.name, options, categories, operations.get_revenues()),
             evolution_graph_path=generate_evolution_graph(account.name, options, operations)
         )
+        Notifications.send_file(options, "expenses.png", report.expenses_graph_path)
+        Notifications.send_file(options, "revenues.png", report.revenue_graph_path)
+        Notifications.send_file(options, "evolution.png", report.evolution_graph_path)
         for operation in operations.get_top_10():
             info = operation.info if operation.info else ''
             wording = operation.wording if operation.wording else ''

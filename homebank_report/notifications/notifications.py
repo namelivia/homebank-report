@@ -14,3 +14,13 @@ class Notifications:
             url=options.get("notifications_service_endpoint"), json=data
         )
         logger.info(response.text)
+
+    @staticmethod
+    def send_file(options, file_name: str, file_path: str):
+        logger.info("Sending notifications")
+        requests.post(
+            url=options.get("notifications_service_endpoint"),
+            data={"body": file_name},
+            files={"file": open(file_path, "rb")},
+        )
+        logger.info(response.text)
