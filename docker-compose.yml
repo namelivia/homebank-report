@@ -10,6 +10,7 @@ services:
     working_dir: /app
     volumes:
       - /tmp:/tmp
+      - ./:/app
     environment:
       GRAPHS_PATH: "/tmp/graphs"
       XML_FILE: "/tmp/test.xhb"

@@ -1,3 +1,4 @@
+import time
 from .operation_set import OperationSet
 from matplotlib import pyplot as plt
 
@@ -6,8 +7,9 @@ def draw_pie_chart(data, graphs_path, labels, title):
     plt.pie(data, labels=labels, autopct='%1.1f%%', startangle=140)  # Create the pie chart
     plt.axis('equal')  # Equal aspect ratio ensures the pie chart is circular
     plt.title(title)
+    current_timestamp = int(time.time())
     slug = title.lower().replace(' ', '_').replace(':', '')
-    path = f'{graphs_path}/{slug}.png'
+    path = f'{graphs_path}/{slug}_{current_timestamp}.png'
     plt.savefig(path)
     return path
 

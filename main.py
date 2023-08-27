@@ -19,6 +19,19 @@ from homebank_report.graph import generate_evolution_graph
 from homebank_report.notifications.notifications import Notifications
 
 
+class Period:
+
+    start_date = None
+    end_date = None
+    name = None
+    slug = None
+
+    def __init__(self, name, start_date, end_date):
+        self.name = name
+        self.slug = name.lower().replace(' ', '_')
+        self.start_date = start_date
+        self.end_date = end_date
+
 
 def process_file_contents(root, options):
     properties = Property(**root.find('properties').attrib)
@@ -37,12 +50,42 @@ def process_file_contents(root, options):
         account.operations.append(operation)
         operations.append(operation)
 
-    today = convert_date_to_homebank_format(date.today())
-    last_month = convert_date_to_homebank_format(date.today() - timedelta(days=30))
-    #last_year = convert_date_to_homebank_format(date.today() - timedelta(days=365))
-    generate_account_reports(last_month, today, accounts, categories, options)
-    #generate_account_reports(0, today)
-    #generate_account_reports(last_year, today)
+    last_month = Period(
+        "Last Month",
+        convert_date_to_homebank_format(date.today() - timedelta(days=30)),
+        convert_date_to_homebank_format(date.today())
+    )
+    last_year = Period(
+        "Last Year",
+        convert_date_to_homebank_format(date.today() - timedelta(days=365)),
+        convert_date_to_homebank_format(date.today())
+    )
+    always = Period(
+        "Always",
+        0,
+        convert_date_to_homebank_format(date.today())
+    )
+    last_year = Period(
+        "Last Year",
+        convert_date_to_homebank_format(date.today() - timedelta(days=365)),
+        convert_date_to_homebank_format(date.today())
+    )
+    for account in accounts.values():
+
+        print_account_report(
+            options,
+            generate_account_report(last_month, account, categories, options)
+        )
+
+        print_account_report(
+            options,
+            generate_account_report(last_year, account, categories, options)
+        )
+
+        print_account_report(
+            options,
+            generate_account_report(always, account, categories, options)
+        )
 
 def main():
     options = Options(os.environ)
@@ -54,27 +97,47 @@ def main():
     except ET.ParseError:
         print("Error: Invalid XML file")
 
+def print_account_report(options, report):
+    message = ""
+    message += f"Period: {report.period.name}\n"
+    message += f"Account: {report.name}\n"
+    message += f"Balance: {report.balance}\n"
+    message += f"Top 10 Expenses:\n"
+    #Notifications.send_file(options, "Expenses Report", report.expenses_graph_path)
+    #Notifications.send_file(options, "Revenue Report", report.revenue_graph_path)
+    #Notifications.send_file(options, "Evolution Report", report.evolution_graph_path)
+    for operation in report.top_10:
+        info = operation.info if operation.info else ''
+        wording = operation.wording if operation.wording else ''
+        message += f"{operation.amount}€ - {info}:{wording}\n"
+    #Notifications.send(options, message)
+    print(message)
 
+def generate_account_report(period, account, categories, options):
+    operations = account.get_operation_set_between(period.start_date, period.end_date)
+    return AccountReport(
+    name=account.name,
+    period=period,
+    balance=operations.get_balance(),
+    expenses_graph_path=generate_expenses_pie_chart(
+        account.name,
+        options,
+        categories,
+        operations.get_expenses()
+    ),
+    revenue_graph_path=generate_revenue_pie_chart(
+        account.name,
+        options,
+        categories,
+        operations.get_revenues()
+    ),
+    evolution_graph_path=generate_evolution_graph(
+        account.name,
+        options,
+        operations
+    ),
+    top_10=operations.get_top_10()
+)
 
-
-def generate_account_reports(start_date, end_date, accounts, categories, options):
-    for account in accounts.values():
-        Notifications.send(options, f"Account: {account.name}")
-        operations = account.get_operation_set_between(start_date, end_date)
-        Notifications.send(options, f"Balance: {operations.get_balance()}")
-        report = AccountReport(
-            name=account.name,
-            balance=operations.get_balance(),
-            expenses_graph_path=generate_expenses_pie_chart(account.name, options, categories, operations.get_expenses()),
-            revenue_graph_path=generate_revenue_pie_chart(account.name, options, categories, operations.get_revenues()),
-            evolution_graph_path=generate_evolution_graph(account.name, options, operations)
-        )
-        Notifications.send_file(options, "expenses.png", report.expenses_graph_path)
-        Notifications.send_file(options, "revenues.png", report.revenue_graph_path)
-        Notifications.send_file(options, "evolution.png", report.evolution_graph_path)
-        for operation in operations.get_top_10():
-            info = operation.info if operation.info else ''
-            wording = operation.wording if operation.wording else ''
-            Notifications.send(options, f"{operation.amount}€ - {info}:{wording}")
 
 main()

@@ -9,7 +9,8 @@ class TestAccountReport:
             balance=1000.0,
             expenses_graph_path="expenses.png",
             revenue_graph_path="revenue.png",
-            evolution_graph_path="evolution.png"
+            evolution_graph_path="evolution.png",
+            top_10=[]
         )
 
     def test_initialization(self, sample_report):
