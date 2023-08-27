@@ -16,6 +16,7 @@ from homebank_report.date_utils import convert_date_from_homebank_format, conver
 from homebank_report.pie_chart import generate_expenses_pie_chart, generate_revenue_pie_chart
 from homebank_report.options import Options
 from homebank_report.graph import generate_evolution_graph
+from homebank_report.notifications.notifications import Notifications
 
 
 
@@ -58,9 +59,9 @@ def main():
 
 def generate_account_reports(start_date, end_date, accounts, categories, options):
     for account in accounts.values():
-        print(f"Account: {account.name}")
+        Notifications.send(options, f"Account: {account.name}")
         operations = account.get_operation_set_between(start_date, end_date)
-        print(f"Balance: {operations.get_balance()}")
+        Notifications.send(options, f"Balance: {operations.get_balance()}")
         report = AccountReport(
             name=account.name,
             balance=operations.get_balance(),
@@ -71,6 +72,6 @@ def generate_account_reports(start_date, end_date, accounts, categories, options
         for operation in operations.get_top_10():
             info = operation.info if operation.info else ''
             wording = operation.wording if operation.wording else ''
-            print(f"{operation.amount}€ - {info}:{wording}")
+            Notifications.send(options, f"{operation.amount}€ - {info}:{wording}")
 
 main()

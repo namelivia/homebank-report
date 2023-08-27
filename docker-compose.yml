@@ -13,6 +13,7 @@ services:
     environment:
       GRAPHS_PATH: "/tmp/graphs"
       XML_FILE: "/tmp/test.xhb"
+      NOTIFICATIONS_SERVICE_ENDPOINT: "notifications_service_endpoint"
     command: [
         "poetry",
         "run",
