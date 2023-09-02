@@ -106,7 +106,7 @@ def send_account_report(options, report):
         for operation in report.top_10:
             info = operation.info if operation.info else ''
             wording = f" > {operation.wording}" if operation.wording else ''
-            top_10 += f"{info}{wording}: {operation.amount}€ \n"
+            top_10 += f"- {info}{wording}: {operation.amount}€ \n"
         Notifications.send(options, top_10)
 
     if (report.expenses_graph_path != ''):
