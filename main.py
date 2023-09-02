@@ -51,23 +51,18 @@ def process_file_contents(root, options):
         operations.append(operation)
 
     last_month = Period(
-        "Last Month",
+        "Último mes",
         convert_date_to_homebank_format(date.today() - timedelta(days=30)),
         convert_date_to_homebank_format(date.today())
     )
     last_year = Period(
-        "Last Year",
+        "Último año",
         convert_date_to_homebank_format(date.today() - timedelta(days=365)),
         convert_date_to_homebank_format(date.today())
     )
     always = Period(
-        "Always",
+        "Siempre",
         0,
-        convert_date_to_homebank_format(date.today())
-    )
-    last_year = Period(
-        "Last Year",
-        convert_date_to_homebank_format(date.today() - timedelta(days=365)),
         convert_date_to_homebank_format(date.today())
     )
     for account in accounts.values():
@@ -104,10 +99,10 @@ def main():
         print("Error: Invalid XML file")
 
 def send_account_report(options, report):
-    Notifications.send(options, "# {report.period.name} {report.name}: {report.balance}€")
+    Notifications.send(options, f"# {report.period.name} {report.name}: {report.balance}€")
 
     if (len(report.top_10) > 0):
-        top_10 = f"## Top 10 Expenses:\n"
+        top_10 = f"## Top 10 Gastos:\n"
         for operation in report.top_10:
             info = operation.info if operation.info else ''
             wording = operation.wording if operation.wording else ''
@@ -115,11 +110,11 @@ def send_account_report(options, report):
         Notifications.send(options, top_10)
 
     if (report.expenses_graph_path != ''):
-        Notifications.send_file(options, "## Expenses Report", report.expenses_graph_path)
+        Notifications.send_file(options, "## Tipo de gastos", report.expenses_graph_path)
     if (report.revenue_graph_path != ''):
-        Notifications.send_file(options, "## Revenue Report", report.revenue_graph_path)
+        Notifications.send_file(options, "## Tipo de ingresos", report.revenue_graph_path)
     if (report.evolution_graph_path != ''):
-        Notifications.send_file(options, "## Evolution Report", report.evolution_graph_path)
+        Notifications.send_file(options, "## Evolución", report.evolution_graph_path)
 
 def generate_account_report(period, account, categories, options):
     operations = account.get_operation_set_between(period.start_date, period.end_date)
