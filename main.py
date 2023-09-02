@@ -99,9 +99,9 @@ def main():
 
 def send_account_report(options, report):
     message = "=========================================\n"
-    message += f"Period: {report.period.name}\n"
-    message += f"Account: {report.name}\n"
-    message += f"Balance: {report.balance}\n"
+    message += f"*Period:* {report.period.name}\n"
+    message += f"*Account:* {report.name}\n"
+    message += f"*Balance:* {report.balance}\n"
     message += "=========================================\n"
     message += f"Top 10 Expenses:\n"
     for operation in report.top_10:
