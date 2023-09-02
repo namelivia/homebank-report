@@ -72,6 +72,11 @@ def process_file_contents(root, options):
     )
     for account in accounts.values():
 
+        report = generate_account_report(last_month, account, categories, options)
+        if (report):
+            send_account_report(options, report)
+
+        '''
         send_account_report(
             options,
             generate_account_report(last_month, account, categories, options)
@@ -86,6 +91,7 @@ def process_file_contents(root, options):
             options,
             generate_account_report(always, account, categories, options)
         )
+        '''
 
 def main():
     options = Options(os.environ)
@@ -121,6 +127,8 @@ def send_account_report(options, report):
 
 def generate_account_report(period, account, categories, options):
     operations = account.get_operation_set_between(period.start_date, period.end_date)
+    if (len(operations) == 0):
+        return None
     return AccountReport(
     name=account.name,
     period=period,
