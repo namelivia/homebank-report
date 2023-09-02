@@ -98,10 +98,8 @@ def main():
         print("Error: Invalid XML file")
 
 def send_account_report(options, report):
-    message = "=========================================\n"
-    message += f"**Period:** {report.period.name}\n"
-    message += f"**Account:** {report.name}\n"
-    message += f"**Balance:** {report.balance}\n"
+    message += f"# {report.name} - {report.balance}\n"
+    message += f"## {report.period.name}\n"
     message += "=========================================\n"
     message += f"## Top 10 Expenses:\n"
     for operation in report.top_10:
