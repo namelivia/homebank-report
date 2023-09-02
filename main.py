@@ -99,7 +99,8 @@ def main():
         print("Error: Invalid XML file")
 
 def send_account_report(options, report):
-    Notifications.send(options, f"# {report.period.name} {report.name}: {report.balance}€")
+    endpoint = options.get("nofitications")[report.name]
+    Notifications.send(endpoint, f"# {report.period.name} {report.name}: {report.balance}€")
 
     if (len(report.top_10) > 0):
         top_10 = f"## Top 10 Gastos:\n"
@@ -107,14 +108,14 @@ def send_account_report(options, report):
             info = operation.info if operation.info else ''
             wording = f" > {operation.wording}" if operation.wording else ''
             top_10 += f"- {info}{wording}: {operation.amount}€ \n"
-        Notifications.send(options, top_10)
+        Notifications.send(endpoint, top_10)
 
     if (report.expenses_graph_path != ''):
-        Notifications.send_file(options, "## Tipo de gastos", report.expenses_graph_path)
+        Notifications.send_file(endpoint, "## Tipo de gastos", report.expenses_graph_path)
     if (report.revenue_graph_path != ''):
-        Notifications.send_file(options, "## Tipo de ingresos", report.revenue_graph_path)
+        Notifications.send_file(endpoint, "## Tipo de ingresos", report.revenue_graph_path)
     if (report.evolution_graph_path != ''):
-        Notifications.send_file(options, "## Evolución", report.evolution_graph_path)
+        Notifications.send_file(endpoint, "## Evolución", report.evolution_graph_path)
 
 def generate_account_report(period, account, categories, options):
     operations = account.get_operation_set_between(period.start_date, period.end_date)

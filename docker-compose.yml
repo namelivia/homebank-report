@@ -14,7 +14,7 @@ services:
     environment:
       GRAPHS_PATH: "/tmp/graphs"
       XML_FILE: "/tmp/test.xhb"
-      NOTIFICATIONS_SERVICE_ENDPOINT: "notifications_service_endpoint"
+      NOTIFICATIONS_CONFIG_FILE: "/tmp/notifications_configuration.yml"
     command: [
         "poetry",
         "run",
