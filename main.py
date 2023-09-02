@@ -99,7 +99,7 @@ def main():
 
 def send_account_report(options, report):
     heading = ""
-    heading += f"# {report.name} - {report.balance}\n"
+    heading += f"# {report.name}: {report.balance}€\n"
     heading += f"## {report.period.name}\n"
     heading += "=========================================\n"
     Notifications.send(options, heading)
