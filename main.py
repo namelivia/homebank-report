@@ -99,7 +99,7 @@ def main():
         print("Error: Invalid XML file")
 
 def send_account_report(options, report):
-    endpoint = options.get("nofitications")[report.name]
+    endpoint = options.get("notifications")[report.name]
     Notifications.send(endpoint, f"# {report.period.name} {report.name}: {report.balance}€")
 
     if (len(report.top_10) > 0):
