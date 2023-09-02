@@ -72,17 +72,17 @@ def process_file_contents(root, options):
     )
     for account in accounts.values():
 
-        print_account_report(
+        send_account_report(
             options,
             generate_account_report(last_month, account, categories, options)
         )
 
-        print_account_report(
+        send_account_report(
             options,
             generate_account_report(last_year, account, categories, options)
         )
 
-        print_account_report(
+        send_account_report(
             options,
             generate_account_report(always, account, categories, options)
         )
@@ -97,7 +97,7 @@ def main():
     except ET.ParseError:
         print("Error: Invalid XML file")
 
-def print_account_report(options, report):
+def send_account_report(options, report):
     message = ""
     message += f"Period: {report.period.name}\n"
     message += f"Account: {report.name}\n"
@@ -108,9 +108,13 @@ def print_account_report(options, report):
         wording = operation.wording if operation.wording else ''
         message += f"{operation.amount}€ - {info}:{wording}\n"
     Notifications.send(options, message)
-    Notifications.send_file(options, "Expenses Report", report.expenses_graph_path)
-    Notifications.send_file(options, "Revenue Report", report.revenue_graph_path)
-    Notifications.send_file(options, "Evolution Report", report.evolution_graph_path)
+
+    if (report.expenses_graph_path != ''):
+        Notifications.send_file(options, "Expenses Report", report.expenses_graph_path)
+    if (report.revenue_graph_path != ''):
+        Notifications.send_file(options, "Revenue Report", report.revenue_graph_path)
+    if (report.evolution_graph_path != ''):
+        Notifications.send_file(options, "Evolution Report", report.evolution_graph_path)
 
 def generate_account_report(period, account, categories, options):
     operations = account.get_operation_set_between(period.start_date, period.end_date)
