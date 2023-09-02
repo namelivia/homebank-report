@@ -103,15 +103,14 @@ def print_account_report(options, report):
     message += f"Account: {report.name}\n"
     message += f"Balance: {report.balance}\n"
     message += f"Top 10 Expenses:\n"
-    #Notifications.send_file(options, "Expenses Report", report.expenses_graph_path)
-    #Notifications.send_file(options, "Revenue Report", report.revenue_graph_path)
-    #Notifications.send_file(options, "Evolution Report", report.evolution_graph_path)
+    Notifications.send_file(options, "Expenses Report", report.expenses_graph_path)
+    Notifications.send_file(options, "Revenue Report", report.revenue_graph_path)
+    Notifications.send_file(options, "Evolution Report", report.evolution_graph_path)
     for operation in report.top_10:
         info = operation.info if operation.info else ''
         wording = operation.wording if operation.wording else ''
         message += f"{operation.amount}€ - {info}:{wording}\n"
-    #Notifications.send(options, message)
-    print(message)
+    Notifications.send(options, message)
 
 def generate_account_report(period, account, categories, options):
     operations = account.get_operation_set_between(period.start_date, period.end_date)
