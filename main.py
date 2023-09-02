@@ -98,16 +98,19 @@ def main():
         print("Error: Invalid XML file")
 
 def send_account_report(options, report):
-    message += f"# {report.name} - {report.balance}\n"
-    message += f"## {report.period.name}\n"
-    message += "=========================================\n"
-    message += f"## Top 10 Expenses:\n"
-    for operation in report.top_10:
-        info = operation.info if operation.info else ''
-        wording = operation.wording if operation.wording else ''
-        message += f"{operation.amount}€ - {info}:{wording}\n"
-    Notifications.send(options, message)
-    message += "=========================================\n"
+    heading = ""
+    heading += f"# {report.name} - {report.balance}\n"
+    heading += f"## {report.period.name}\n"
+    heading += "=========================================\n"
+    Notifications.send(options, heading)
+
+    if (len(report.top_10) > 0):
+        top_10 = f"## Top 10 Expenses:\n"
+        for operation in report.top_10:
+            info = operation.info if operation.info else ''
+            wording = operation.wording if operation.wording else ''
+            top_10 += f"{operation.amount}€ - {info}:{wording}\n"
+        Notifications.send(options, top_10)
 
     if (report.expenses_graph_path != ''):
         Notifications.send_file(options, "## Expenses Report", report.expenses_graph_path)
