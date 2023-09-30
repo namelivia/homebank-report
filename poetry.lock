@@ -551,13 +551,13 @@ testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
 name = "pyaml"
-version = "23.9.6"
+version = "23.9.7"
 description = "PyYAML-based module to produce a bit more pretty and readable YAML-serialized data"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pyaml-23.9.6-py3-none-any.whl", hash = "sha256:9dcc67922b7278f3680e573324b2e8a8d2f86c5d09bf640cba83735fb1663e97"},
-    {file = "pyaml-23.9.6.tar.gz", hash = "sha256:2b2c39017b718a127bef9f96bc55f89414d960876668d69880aae66f4ba98957"},
+    {file = "pyaml-23.9.7-py3-none-any.whl", hash = "sha256:fdb4c111b676d2381d1aa88c378fcde46c167575dfd688e656977a77075b692c"},
+    {file = "pyaml-23.9.7.tar.gz", hash = "sha256:581ea4e99f0e308864407e04c03c609241aefa3a15dfba8964da7644baf3b217"},
 ]
 
 [package.dependencies]
@@ -772,4 +772,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "606a05786c807fda5adfbf1350d2e30bdacc7ce62107680480d0740efe4420e0"
+content-hash = "18ad81e3964d2d62920d36908c1ef73ac42679941f15f7993333c76ecf8b8c6f"
