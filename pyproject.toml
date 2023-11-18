@@ -9,7 +9,7 @@ packages = [{include = "homebank_report"}]
 [tool.poetry.dependencies]
 python = "^3.11"
 numpy = "^1.25.2"
-matplotlib = "^3.8.1"
+matplotlib = "^3.8.2"
 requests = "^2.31.0"
 pyaml = "^23.9.7"
 
